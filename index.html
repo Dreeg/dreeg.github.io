@@ -1,8 +1,841 @@
-<html>
+<!DOCTYPE html>
+<html lang="it">
 <head>
-<title>WIP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuel Felici - DevOps Tech Leader & Community Builder</title>
+    <meta name="description" content="Manuel Felici - Technical Account Manager, DevOps Tech Leader e Community Builder presso Sourcesense. Roma, Italia.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #1f2b3d;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --accent-secondary: #818cf8;
+            --border: #1e293b;
+            --border-hover: #334155;
+            --gradient-start: #38bdf8;
+            --gradient-end: #818cf8;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== BACKGROUND EFFECTS ===== */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.07;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow--1 {
+            top: -200px;
+            right: -100px;
+            background: var(--accent);
+        }
+
+        .bg-glow--2 {
+            bottom: -200px;
+            left: -100px;
+            background: var(--accent-secondary);
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span { color: var(--text-muted); }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .hero__greeting {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .hero__name {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.15s forwards;
+        }
+
+        .hero__name .gradient-text {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero__title {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+
+        .hero__bio {
+            max-width: 540px;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.45s forwards;
+        }
+
+        .hero__cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.6s forwards;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: var(--bg-primary);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .btn--outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-hover);
+        }
+
+        .btn--outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+
+        /* ===== EXPERTISE ===== */
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .expertise-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .expertise-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+        }
+
+        .expertise-card__icon {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+        }
+
+        .expertise-card__title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .expertise-card__desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 32px;
+        }
+
+        .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* ===== EXPERIENCE TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-secondary), transparent);
+            border-radius: 1px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .timeline-item__period {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .timeline-item__role {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-item__company {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .timeline-item__desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== COMMUNITY ===== */
+        .community-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .community-stat {
+            text-align: center;
+            padding: 32px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .community-stat:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .community-stat__number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .community-stat__label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer .heart { color: var(--accent); }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== TERMINAL PROMPT ===== */
+        .terminal-prompt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .terminal-prompt .prompt-symbol { color: var(--accent); }
+        .terminal-prompt .prompt-path { color: var(--accent-secondary); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+
+            .hero { padding-top: 100px; min-height: auto; padding-bottom: 60px; }
+
+            section { padding: 60px 0; }
+
+            .expertise-grid,
+            .community-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links { flex-direction: column; }
+            .contact-link { justify-content: center; }
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-secondary);
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    </style>
 </head>
 <body>
-<p>Work in progress</p>
+
+    <!-- Background effects -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="nav-logo">mfelici<span>@~$</span></a>
+            <ul class="nav-links">
+                <li><a href="#chi-sono">Chi sono</a></li>
+                <li><a href="#expertise">Expertise</a></li>
+                <li><a href="#percorso">Percorso</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#contatti">Contatti</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <p class="hero__greeting">Ciao, mi chiamo</p>
+            <h1 class="hero__name">
+                <span class="gradient-text">Manuel Felici.</span>
+            </h1>
+            <p class="hero__title">Technical Account Manager, DevOps Tech Leader<br>& Community Builder</p>
+            <p class="hero__bio">
+                Da anni impegnato e appassionato di automatismi in ambito DevOps
+                e nel migliorare la collaborazione tra le persone.
+                Costruisco infrastrutture affidabili e community che funzionano.
+            </p>
+            <div class="hero__cta">
+                <a href="#contatti" class="btn btn--primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    Contattami
+                </a>
+                <a href="https://github.com/Dreeg" class="btn btn--outline" target="_blank" rel="noopener">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chi sono -->
+    <section id="chi-sono">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">// chi sono</p>
+                <h2 class="section-title">Un po' su di me</h2>
+                <div class="terminal-prompt">
+                    <span class="prompt-symbol">$</span> <span class="prompt-path">~/about</span> cat info.yml
+                </div>
+                <p style="color: var(--text-secondary); max-width: 600px; margin-bottom: 20px;">
+                    Sono un professionista IT con sede a Roma, con oltre 10 anni di esperienza
+                    in ambito DevOps, automazione infrastrutturale e gestione di piattaforme
+                    di software lifecycle. Lavoro presso <strong style="color: var(--text-primary);">Sourcesense</strong>
+                    dove ricopro il ruolo di Technical Account Manager.
+                </p>
+                <p style="color: var(--text-secondary); max-width: 600px;">
+                    Oltre al lato tecnico, sono un Community Builder: organizzo meetup,
+                    eventi di networking e iniziative come SourceKitchen e SourceAdventure
+                    per rafforzare la collaborazione e il senso di appartenenza.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise -->
+    <section id="expertise">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">// expertise</p>
+                <h2 class="section-title">Cosa faccio</h2>
+                <div class="expertise-grid">
+                    <div class="expertise-card">
+                        <div class="expertise-card__icon">&#9881;</div>
+                        <h3 class="expertise-card__title">DevOps & Automazione</h3>
+                        <p class="expertise-card__desc">
+                            Progettazione e gestione di pipeline CI/CD, Infrastructure as Code,
+                            configuration management e automazione infrastrutturale.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card__icon">&#9729;</div>
+                        <h3 class="expertise-card__title">Cloud & Containers</h3>
+                        <p class="expertise-card__desc">
+                            Orchestrazione con Kubernetes, containerizzazione Docker,
+                            piattaforme Red Hat OpenShift e architetture cloud native.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card__icon">&#128274;</div>
+                        <h3 class="expertise-card__title">ALM & Piattaforme</h3>
+                        <p class="expertise-card__desc">
+                            Gestione e delivery di piattaforme Application Lifecycle Management:
+                            GitLab, Jenkins, Artifactory, SonarQube e prodotti Atlassian.
+                        </p>
+                    </div>
+                    <div class="expertise-card">
+                        <div class="expertise-card__icon">&#127760;</div>
+                        <h3 class="expertise-card__title">Community Building</h3>
+                        <p class="expertise-card__desc">
+                            Organizzazione di meetup tech, eventi aziendali e iniziative
+                            per costruire community e favorire la condivisione di conoscenze.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tech-tags">
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Kubernetes</span>
+                    <span class="tech-tag">Ansible</span>
+                    <span class="tech-tag">Chef</span>
+                    <span class="tech-tag">Jenkins</span>
+                    <span class="tech-tag">GitLab</span>
+                    <span class="tech-tag">Terraform</span>
+                    <span class="tech-tag">Prometheus</span>
+                    <span class="tech-tag">Nagios</span>
+                    <span class="tech-tag">SonarQube</span>
+                    <span class="tech-tag">Artifactory</span>
+                    <span class="tech-tag">Vault</span>
+                    <span class="tech-tag">Red Hat</span>
+                    <span class="tech-tag">FreeIPA</span>
+                    <span class="tech-tag">Keycloak</span>
+                    <span class="tech-tag">Ruby</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Bash</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Percorso -->
+    <section id="percorso">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">// percorso</p>
+                <h2 class="section-title">Esperienza</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <p class="timeline-item__period">2025 - Presente</p>
+                        <h3 class="timeline-item__role">Technical Account Manager</h3>
+                        <p class="timeline-item__company">Sourcesense &middot; Roma</p>
+                        <p class="timeline-item__desc">
+                            Gestione strategica delle relazioni con i clienti e delivery
+                            di soluzioni tecnologiche complesse.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="timeline-item__period">2015 - Presente</p>
+                        <h3 class="timeline-item__role">DevOps Tech Leader & Community Builder</h3>
+                        <p class="timeline-item__company">Sourcesense &middot; Roma</p>
+                        <p class="timeline-item__desc">
+                            Consulenza DevOps per clienti enterprise tra cui Banca Mediolanum,
+                            Axa Assicurazioni, Credit Agricole, Team Digitale e Poste Italiane.
+                            Gestione piattaforme lifecycle, CI/CD, monitoring e formazione team.
+                            Tutor alla DevOps Academy. Organizzazione meetup e community tech.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="timeline-item__period">2011 - 2015</p>
+                        <h3 class="timeline-item__role">Webmaster Freelance</h3>
+                        <p class="timeline-item__company">Freelance &middot; Roma / Latina</p>
+                        <p class="timeline-item__desc">
+                            Sviluppo siti web e collaborazione con aziende locali per
+                            la gestione e manutenzione di piattaforme web.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community -->
+    <section id="community">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">// community</p>
+                <h2 class="section-title">Costruire insieme</h2>
+                <p style="color: var(--text-secondary); max-width: 600px; margin-bottom: 40px;">
+                    Credo che la tecnologia sia soprattutto collaborazione.
+                    Per questo organizzo eventi, meetup e momenti di condivisione
+                    che vanno oltre il codice.
+                </p>
+                <div class="community-highlights">
+                    <div class="community-stat">
+                        <p class="community-stat__number">7+</p>
+                        <p class="community-stat__label">Community tech coinvolte</p>
+                    </div>
+                    <div class="community-stat">
+                        <p class="community-stat__number">10+</p>
+                        <p class="community-stat__label">Anni in Sourcesense</p>
+                    </div>
+                    <div class="community-stat">
+                        <p class="community-stat__number">6</p>
+                        <p class="community-stat__label">Edizioni DevOps Academy</p>
+                    </div>
+                    <div class="community-stat">
+                        <p class="community-stat__number">5+</p>
+                        <p class="community-stat__label">Clienti enterprise</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contatti -->
+    <section id="contatti">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-label">// contatti</p>
+                <h2 class="section-title">Restiamo in contatto</h2>
+                <p style="color: var(--text-secondary); max-width: 500px;">
+                    Che si tratti di DevOps, community o semplicemente di scambiare
+                    due chiacchiere davanti a una birra, scrivimi.
+                </p>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/manuelfelici/" class="contact-link" target="_blank" rel="noopener">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://github.com/Dreeg" class="contact-link" target="_blank" rel="noopener">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                        GitHub
+                    </a>
+                    <a href="https://x.com/FeliciManuel" class="contact-link" target="_blank" rel="noopener">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+                        X / Twitter
+                    </a>
+                    <a href="mailto:manuel.felici@sourcesense.com" class="contact-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Progettato con <span class="heart">&hearts;</span> e tanta caffeina &middot; Manuel Felici &middot; 2025</p>
+        </div>
+    </footer>
+
+    <!-- JS: Scroll reveal animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll reveal
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            reveals.forEach(el => observer.observe(el));
+
+            // Smooth scroll for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
